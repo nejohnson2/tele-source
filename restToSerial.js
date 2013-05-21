@@ -31,8 +31,8 @@ server.listen(8080);								// listen for incoming requests on the server
 console.log("Listening for new clients on port 8080");
 
 // configure server to serve static files from /js and /css:
-  app.use('/js', express.static(__dirname + '/js'));
-  app.use('/css', express.static(__dirname + '/css'));
+app.use('/js', express.static(__dirname + '/js'));
+app.use('/css', express.static(__dirname + '/css'));
 
 // respond to web GET requests with the index.html page:
 app.get('/', function (request, response) {
@@ -46,13 +46,10 @@ var myPort = new SerialPort(portName, {
 	parser: serialport.parsers.readline("\r\n") 
 });
   
-var sys = require('sys')
-var exec = require('child_process').exec;
+/*
 // take anything that begins with /output:
 app.get('/output', function (request, response) {
-  // the route is the first parameter of the URL request:
-  //var params = request.params[0].split("/");
-  //var brightnessCommand = params.join(""); 
+
   var sendOn = '1';
   console.log("received "+sendOn);
 
@@ -64,6 +61,7 @@ app.get('/output', function (request, response) {
   response.end(sendOn);
 
 });  
+*/
 
 app.get('/text', function(request, response) {
  	console.log("this is /text");
@@ -76,48 +74,42 @@ app.get('/text', function(request, response) {
 	response.end(sendOn);*/
 
 	console.log(request.query.message);
-        var message = request.query.message;
-	//need to get message and send it into the child command here   ---- '{print $2}'
+    var message = request.query.message;
 	var command = "echo tmsis | sudo ./OpenBTSCLI | grep -v TMSI | awk '{print $2}' | grep -v '^$' | grep -E \"[0-9]+\"";
+
 	var child = exec(command, function(error, stdout, stderr) {
-		//sys.print('stdout: ' + stdout);
-		//sys.print('stderr: ' + stderr);
+	
 		if (error != null) {
 			console.log('exec error: ' + error);
 		}
-
-		console.log("done");
 	
 		var list = stdout.split('\n')
-		console.log("RIGHT HERE: " + list);
 
-for(var i=0; i<list.length-1; i++){
-	if(list[i] != ''){
-		var newCommand = "echo sendsms "+list[i]+" 0 "+message+" | sudo ./OpenBTSCLI";
-		console.log(newCommand);
-		var newChild = exec(newCommand, function(error, stdout,stderr) {
-			sys.print('New Child stdout: ' + stdout);
-			sys.print('New Child stderr: ' + stderr);
-			if(error != null) {
-				console.log('New Child exec error: ' + error);
+		for(var i=0; i<list.length-1; i++){
+			if(list[i] != ''){
+				var newCommand = "echo sendsms " + list[i] + " 0 " + message + " | sudo ./OpenBTSCLI";
+				
+				console.log(newCommand);
+				
+				var newChild = exec(newCommand, function(error, stdout,stderr) {
+					if(error != null) {
+						console.log('New Child exec error: ' + error);
+					}					
+				});
 			}
-			
-		});
-	}
-}
+		}
 	});
-
 
 	response.send("success");
 
 });
 
 app.get('/numbers', function(request, response) {
-	console.log("echo tmsis | sudo ./OpenBTSCLI | grep -v TMSI | awk '{print $2}' | grep -v '^$' | grep -E \"[0-9]+\"");
 	var command = "echo tmsis | sudo ./OpenBTSCLI | grep -v TMSI | awk '{print $2}' | grep -v '^$' | grep -E \"[0-9]+\"";
-
+	console.log(command);
+	
  	var child = exec(command, function(error, stdout, stderr){
 		console.log("IMSI NUMBERS");
-	response.send(stdout);
+		response.send(stdout);
 	});
 });

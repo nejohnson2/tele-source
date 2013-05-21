@@ -1,12 +1,3 @@
-
-$(function(){
-	$('#mainButton').on('click', function() {
-		//console.log("hello");
-		//$.get({ "/output", function(data){ console.log("hi");});
-	
-	});
-});
-
 $(function () {
   $("form").submit(function (e) {
 
@@ -22,7 +13,8 @@ $(function () {
    });
    $(this).find('input').val('');
   });
-/*  
+  
+  /******  This is to show how many characters have been typed  ******/
   var keyHandler = function (e) {
     var len = this.value.length;
     var left = 120 - len;
@@ -44,25 +36,9 @@ $(function () {
   };
   $("input").keydown(keyHandler);
   $("input").keypress(keyHandler);
-  $("input").keyup(keyHandler);*/
+  $("input").keyup(keyHandler);
+  
+  
 });
 
 
-
-
-
-$(function(){
-	$('#blueSlider').slider({
-	 orientation:'vertical',
-	 range: 'min',
-	 value: '0',
-	 stop: function( event, ui ) {
-            $.get(
-    			"/output/b/" + ui.value,
-    			function(data) {
-      				 $("#blueLabel").html(ui.value);
-    			}
-			);
-     	}
-	});
-});
