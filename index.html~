@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>	
+	<script src="js/jquery/jquery.min.js"></script>
+	<!-- <script src="js/reqwest/reqwest.min.js"></script> -->
+	<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+	<script type="text/javascript" src="js/jquery-ui-1.8.23.custom.min.js"></script>
+	<script type="text/javascript" src="js/sliders.js"></script>
+	<link type="text/css" href="css/ui-lightness/jquery-ui-1.8.23.custom.css" rel="stylesheet" />
+	<link type="text/css" href="css/styles.css" rel="stylesheet" />
+    </head>
+	<body>
+	<div id="sky">
+  		<div id="title">tele-source</div>
+  		<div id="haiku">
+    			<form method="get" action="/">
+     			<div><input placeholder="insert message here" name="message" type="text" maxlength="120" /><span class="num">120</span></div>
+      			<div><button id="mainButton" type="submit">send message </button></div>
+    			</form>
+  
+  		</div>
+			<br>
+			<br>
+			<div styel="float: center;"><h3>Current Connections:</h3></div>
+    			<div style="float: center; margin-left:-46px">
+				
+        			<ul id="numbers" style="list-style-type: none;"> </ul>
+      			</div>
+ 		 <div id="confirmation">your message has been sent</div>
+ 		 <br>
+ 		 <br>
+ 		 <div><h2>the Future of Cell Phone Infrastructure</h2>
+			<p>tele-source is a cell phone tower designed to be deployed during disaster situations to provide SMS communication.</p>		
+		</div>
+		<br>
+		<br>
+		<br>
+		<br>
+		<div><h4>Nicholas Johnson, Daniel Moore, Jonathan Dahan</h4></div> 
+	</div>
+	
+<script>
+  var interval = setInterval(function(){
+    jQuery.ajax({
+        url: '/numbers'
+      , success: function (res) {
+          $('#numbers li').remove();
+          _ref = res.split("\n");
+          if(_ref.length != 0) {
+             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+               number = _ref[_i];
+               $('#numbers').append("<li>IMSI: " + number + "</li>");
+             }
+             /*for (_i = 0,_i < _ref.length; _i++) {
+               number = _ref[_i];
+               $('#numbers').append("<li>IMSI: " + number + "</li>");
+             }*/
+          }
+      }
+    })
+  }, 10*1000);
+</script> 
+	</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "restToSerial",
+  "version": "0.3",
+  "description" : "A browser-to-serial application using RESTian URL calls",
+  "keywords": "serial, node-serialport",
+  "author": {
+  	"name":"Tom Igoe"
+   },
+  "dependencies": {
+    "serialport": "1.0.x",
+    "express": "3.x"
+  },
+  "engines": {
+    "node": "0.8.x",
+    "npm": "1.1.x"
+  }
+}
